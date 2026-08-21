@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
+<title>Student Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12161F;
+    --surface: #1B2130;
+    --surface-2: #222939;
+    --ink: #ECE9E1;
+    --ink-dim: #9CA3AF;
+    --gold: #E3B23C;
+    --teal: #5A9098;
+    --border: #2B3244;
+  }
+
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  header.profile-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3.5rem 1.5rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .avatar{
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--teal));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--bg);
+    margin-bottom: 1.25rem;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 2.2rem;
+  }
+
+  .subtitle{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+
+  nav.main-nav{
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+  }
+
+  nav.main-nav a{
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  nav.main-nav a:hover{
+    background: rgba(227, 178, 60, 0.1);
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  main{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem;
+  }
+
+  section{
+    margin-bottom: 3.5rem;
+    scroll-margin-top: 2rem;
+  }
+
+  section h2{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section.about p{
+    font-size: 1.02rem;
+    max-width: 65ch;
+  }
+
+  section.about p + p{
+    margin-top: 1rem;
+  }
+
+  .skills-intro{
+    margin-bottom: 1.5rem;
+    color: var(--ink-dim);
+    max-width: 65ch;
+  }
+
+  .skills-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem 1.2rem;
+  }
+
+  .skill-card .skill-name{
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.35rem;
+  }
+
+  .skill-card .skill-desc{
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+  }
+
+  footer{
+    border-top: 1px solid var(--border);
+    padding: 1.5rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+  }
+
+  @media (max-width: 500px){
+    nav.main-nav{ flex-wrap: wrap; }
+    h1{ font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="profile-header">
+    <img class="avatar" src="josecortez.jpg" alt="Jose Gabriel Y. Cortez" style="object-fit:cover;">
+    <h1>Jose Gabriel Y. Cortez </h1>
+    <p class="subtitle">About Myself</p>
+
+    <nav class="main-nav">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="about" id="about">
+      <h2>About</h2>
+      <p>
+        My name is Jose Gabriel Y. Cortez, and I'm a student with a strong passion for technology and software development.
+         I enjoy learning new programming languages, frameworks, and tools that allow me to create innovative
+          solutions and applications.
+      </p>
+      <p>
+        Outside of school i like to play sports like volleyball, table tennis and more. I also enjoy playing video games
+        like Apex legends and Mobile legends, I am also a big Marvel Fan. 
+      </p>
+    </section>
+
+    <section class="skills" id="skills">
+      <h2>Skills</h2>
+      <p class="skills-intro">
+        Tools and skills that I have learned during my time as a Student.
+      </p>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-name">HTML & CSS</div>
+          <div class="skill-desc">Building and styling structured, responsive web pages.</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">JavaScript</div>
+          <div class="skill-desc">Adding interactivity and handling logic on the front end.</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">Java</div>
+          <div class="skill-desc">Writing object-oriented programs for coursework and apps.</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">Laravel</div>
+          <div class="skill-desc">Developing and testing mobile applications for Android.</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">Git & GitHub</div>
+          <div class="skill-desc">Tracking changes and collaborating on projects with version control.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2026 Jose Gabriel Y. Cortez. All rights reserved.
+  </footer>
+
+</body>
+</html>
