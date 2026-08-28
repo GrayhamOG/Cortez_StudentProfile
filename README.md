@@ -14,6 +14,58 @@ A basic student profile web page built with **HTML and CSS only**, bundled and c
 
 ## ACTIVITY 3 Phone | Tablet | Desktop
 
+# Student Profile App
+ 
+A simple responsive Student Profile page built with HTML and CSS, packaged as a Cordova app.
+ 
+## 1. Project Description
+ 
+A single-page profile app for Jose Gabriel Y. Cortez, an IT student. It shows an About section and a Skills section, built with plain HTML/CSS (no JS frameworks) and fully responsive.
+ 
+## 2. Application Structure
+ 
+- **Header** – avatar, name, and subtitle
+- **Navigation Menu** – "About" and "Skills" links
+- **About Section** – background, interests, and goals
+- **Skills Section** – grid of skill cards (HTML/CSS, JavaScript, Java, Laravel, Git & GitHub)
+- **Footer** – copyright notice
+## 3. Responsive Design
+ 
+Made responsive using:
+- `clamp()` for fluid spacing and font sizes
+- CSS Grid (`auto-fit`, `minmax()`) so the skills grid reflows automatically
+- Media queries at 768px and 500px for tablet/mobile layouts
+## 4. UI/UX Principles Applied
+ 
+- **Responsive Layout** – fluid container width + grid + media queries
+- **Mobile-Friendly Spacing** – clamp()-based spacing shrinks on smaller screens
+- **Appropriate Typography** – Fraunces for headings, Inter for body text, JetBrains Mono for labels
+- **Clear Visual Hierarchy** – size/weight/color distinguish name, headings, and body text
+- **Usable Controls** – nav links have 44px min tap targets and hover/focus states
+- **Basic Accessibility** – skip link, alt text, focus outlines, semantic HTML tags
+- **Consistent Design** – shared color palette and spacing variables throughout
+## 5. Navigation
+ 
+The About and Skills links are plain anchor tags (`#about`, `#skills`) that scroll to sections on the same page. No JavaScript is used — navigation works with native HTML/CSS only.
+ 
+## 6. How to Run (Cordova)
+ 
+```bash
+# Install Cordova
+npm install -g cordova
+ 
+# Create the project (skip if it already exists)
+cordova create StudentProfile com.example.studentprofile StudentProfile
+cd StudentProfile
+ 
+# Add this app's files into the www folder, then:
+cordova platform add android
+ 
+# Build and run
+cordova build android
+cordova run android
+```
+
 ## PHONE 
 | Home / Header | About Section | Skills Section |
 |---|---|---|
