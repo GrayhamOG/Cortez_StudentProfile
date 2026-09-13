@@ -84,7 +84,10 @@ cordova run android
 
 ## ACTIVITY 4 Multi-Page Student Profile
 
-## SCREENSHOTS
+# Project Description
+This is my activity 4 which implements different pages for my student profile such a page for home, about, skills, projects and contacts.
+
+## Application Pages SCREENSHOTS
 | Profile Section | About Section | Skills Section |
 |---|---|---|
 | ![Profile screenshot](Screenshots/profile.png) | ![About screenshot](Screenshots/about.png) | ![Skills screenshot](Screenshots/skills.png) |
@@ -98,4 +101,9 @@ cordova run android
 ## Navigation
 
 Navigation is implemented by using href and multiple html files, so href html syntax connects the index file with other html files.
+
+# Responsive Design 
+My code still implements the responsive design from activity 3 i just implemented it to gthe different pages.
+
+
 
