@@ -8,270 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #12161F;
-    --surface: #1B2130;
-    --surface-2: #222939;
-    --ink: #ECE9E1;
-    --ink-dim: #B7BCC6;
-    --gold: #E3B23C;
-    --teal: #7FB2B9;
-    --border: #2B3244;
-
-    /* fluid spacing scale */
-    --space-xs: clamp(0.5rem, 0.4rem + 0.4vw, 0.75rem);
-    --space-sm: clamp(0.85rem, 0.7rem + 0.6vw, 1.25rem);
-    --space-md: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
-    --space-lg: clamp(2.25rem, 1.7rem + 2vw, 3.5rem);
-    --space-xl: clamp(3rem, 2.2rem + 3vw, 5rem);
-  }
-
-  *{ box-sizing: border-box; margin: 0; padding: 0; }
-
-  html{
-    scroll-behavior: smooth;
-  }
-
-  body{
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Inter', sans-serif;
-    line-height: 1.65;
-    font-size: 16px;
-    overflow-x: hidden;
-  }
-
-  img{ max-width: 100%; display: block; }
-
-  /* Accessibility: skip link */
-  .skip-link{
-    position: absolute;
-    left: 1rem;
-    top: -3rem;
-    background: var(--gold);
-    color: var(--bg);
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: top 0.15s ease;
-    z-index: 100;
-  }
-
-  .skip-link:focus{
-    top: 1rem;
-  }
-
-  /* Consistent focus visibility for all interactive elements */
-  a:focus-visible{
-    outline: 2px solid var(--gold);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  header.profile-header{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: var(--space-xl) var(--space-md) var(--space-lg);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .avatar{
-    width: clamp(84px, 12vw, 110px);
-    height: clamp(84px, 12vw, 110px);
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--teal));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Fraunces', serif;
-    font-size: 2.1rem;
-    font-weight: 700;
-    color: var(--bg);
-    margin-bottom: var(--space-sm);
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-
-  h1{
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: clamp(1.6rem, 1.25rem + 1.5vw, 2.4rem);
-    line-height: 1.2;
-    max-width: 20ch;
-  }
-
-  .subtitle{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-top: var(--space-xs);
-  }
-
-  nav.main-nav{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.6rem;
-    margin-top: var(--space-md);
-  }
-
-  nav.main-nav a{
-    color: var(--ink-dim);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 0.65rem 1.3rem;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  }
-
-  nav.main-nav a:hover,
-  nav.main-nav a:focus-visible{
-    background: rgba(227, 178, 60, 0.12);
-    color: var(--gold);
-    border-color: var(--gold);
-  }
-
-  /* Underline reinforces state without relying on color alone */
-  nav.main-nav a:hover{
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
-  main{
-    max-width: 760px;
-    margin: 0 auto;
-    padding: var(--space-xl) var(--space-md);
-  }
-
-  section{
-    margin-bottom: var(--space-xl);
-    scroll-margin-top: 1.5rem;
-  }
-
-  section:last-of-type{
-    margin-bottom: 0;
-  }
-
-  section h2{
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-dim);
-    margin-bottom: var(--space-md);
-    padding-bottom: var(--space-xs);
-    border-bottom: 1px solid var(--border);
-  }
-
-  section.about p{
-    font-size: clamp(0.98rem, 0.93rem + 0.2vw, 1.05rem);
-    max-width: 65ch;
-  }
-
-  section.about p + p{
-    margin-top: var(--space-sm);
-  }
-
-  .skills-intro{
-    margin-bottom: var(--space-md);
-    color: var(--ink-dim);
-    max-width: 65ch;
-  }
-
-  .skills-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-sm);
-  }
-
-  .skill-card{
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: var(--space-sm) var(--space-sm);
-  }
-
-  .skill-card .skill-name{
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 1.02rem;
-    color: var(--ink);
-    margin-bottom: 0.4rem;
-  }
-
-  .skill-card .skill-desc{
-    font-size: 0.9rem;
-    line-height: 1.55;
-    color: var(--ink-dim);
-  }
-
-  footer{
-    border-top: 1px solid var(--border);
-    padding: var(--space-md) var(--space-md);
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--ink-dim);
-  }
-
-  /* ---------- Tablet ---------- */
-  @media (max-width: 768px){
-    main{
-      padding: var(--space-lg) var(--space-md);
-    }
-
-    .skills-grid{
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* ---------- Mobile ---------- */
-  @media (max-width: 500px){
-    header.profile-header{
-      padding: var(--space-lg) var(--space-sm) var(--space-md);
-    }
-
-    nav.main-nav{
-      width: 100%;
-      gap: 0.5rem;
-    }
-
-    nav.main-nav a{
-      flex: 1 1 auto;
-      justify-content: center;
-      padding: 0.65rem 0.9rem;
-    }
-
-    main{
-      padding: var(--space-md) var(--space-sm);
-    }
-
-    .skills-grid{
-      grid-template-columns: 1fr;
-    }
-
-    section.about p,
-    .skills-intro{
-      max-width: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior: auto; }
-    nav.main-nav a{ transition: none; }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -280,61 +17,46 @@
   <header class="profile-header">
     <img class="avatar" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
     <h1>Jose Gabriel Y. Cortez</h1>
-    <p class="subtitle">About Myself</p>
+    <p class="subtitle">Student Profile</p>
 
-    <nav class="main-nav" aria-label="Section navigation">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html" aria-current="page">Profile</a>
+      <a href="about.html">About</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </header>
 
   <main id="main-content">
-    <section class="about" id="about">
-      <h2>About</h2>
-      <p>
-        My name is Jose Gabriel Y. Cortez, and I'm a student with a strong passion for technology and software
-        development. I enjoy learning new programming languages, frameworks, and tools that allow me to create
-        innovative solutions and applications.
-      </p>
-      <p>
-        I'm currently studying Information Technology, where I've been building a foundation in programming,
-        web development, and software design through coursework and hands-on projects. Outside of class, I like
-        to play sports such as volleyball and table tennis, and I enjoy video games like Apex Legends and Mobile
-        Legends. I'm also a big Marvel fan.
-      </p>
-      <p>
-        Looking ahead, my goal is to grow into a full-stack developer and eventually work on products that make
-        a real difference for the people who use them. I'm always looking for new projects, internships, and
-        opportunities to keep learning and sharpening my skills.
+    <section class="intro">
+      <p class="hero-tagline">Student developer building things I'd actually want to use.</p>
+      <p class="hero-desc">
+        I'm an Information Technology student with a strong interest in software development, from front-end
+        interfaces to back-end logic. This site is a quick look at who I am, what I've learned so far, and the
+        projects I've built along the way — use the navigation above or the cards below to explore.
       </p>
     </section>
 
-    <section class="skills" id="skills">
-      <h2>Skills</h2>
-      <p class="skills-intro">
-        Tools and skills that I have learned during my time as a student.
-      </p>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <div class="skill-name">HTML &amp; CSS</div>
-          <div class="skill-desc">Building and styling structured, responsive web pages.</div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-name">JavaScript</div>
-          <div class="skill-desc">Adding interactivity and handling logic on the front end.</div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-name">Java</div>
-          <div class="skill-desc">Writing object-oriented programs for coursework and apps.</div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-name">Laravel</div>
-          <div class="skill-desc">Building back-end features and APIs with PHP's Laravel framework.</div>
-        </div>
-        <div class="skill-card">
-          <div class="skill-name">Git &amp; GitHub</div>
-          <div class="skill-desc">Tracking changes and collaborating on projects with version control.</div>
-        </div>
+    <section class="quick-links-section">
+      <h2>Explore</h2>
+      <div class="quick-links">
+        <a class="quick-link-card" href="about.html">
+          <div class="ql-title">About</div>
+          <div class="ql-desc">My background, interests, and goals.</div>
+        </a>
+        <a class="quick-link-card" href="skills.html">
+          <div class="ql-title">Skills</div>
+          <div class="ql-desc">Languages, frameworks, and tools I use.</div>
+        </a>
+        <a class="quick-link-card" href="projects.html">
+          <div class="ql-title">Projects</div>
+          <div class="ql-desc">A few things I've built and shipped.</div>
+        </a>
+        <a class="quick-link-card" href="contact.html">
+          <div class="ql-title">Contact</div>
+          <div class="ql-desc">Where to reach me and find my work.</div>
+        </a>
       </div>
     </section>
   </main>

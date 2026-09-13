@@ -80,3 +80,21 @@ cordova run android
 | Home / Header | About Section | Skills Section |
 |---|---|---|
 | ![Home screenshot](Screenshots/desktop1.png) | ![About screenshot](Screenshots/desktop2.png) | ![Skills screenshot](Screenshots/desktop3.png) |
+
+
+## ACTIVITY 4 Multi-Page Student Profile
+
+## SCREENSHOTS
+| Profile Section | About Section | Skills Section |
+|---|---|---|
+| ![Profile screenshot](Screenshots/profile.png) | ![About screenshot](Screenshots/about.png) | ![Skills screenshot](Screenshots/skills.png) |
+
+| Projects Section | Contact Section |
+|---|---|---|
+| ![Projects screenshot](Screenshots/projects.png) | ![Contact screenshot](Screenshots/contact.png) | 
+
+
+## Navigation
+
+Navigation is implemented by using href and multiple html files, so href html syntax connects the index file with other html files.
+
