@@ -89,8 +89,9 @@ cordova run android
 |---|---|---|
 | ![Profile screenshot](Screenshots/profile.png) | ![About screenshot](Screenshots/about.png) | ![Skills screenshot](Screenshots/skills.png) |
 
+## More Screenshots
 | Projects Section | Contact Section |
-|---|---|---|
+|---|---|
 | ![Projects screenshot](Screenshots/projects.png) | ![Contact screenshot](Screenshots/contact.png) | 
 
 
