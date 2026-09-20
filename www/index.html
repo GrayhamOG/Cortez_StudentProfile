@@ -16,7 +16,7 @@
 
   <header class="profile-header">
     <img class="avatar" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
-    <h1>Jose Gabriel Y. Cortez</h1>
+    <h1 id="header-name">Jose Gabriel Y. Cortez</h1>
     <p class="subtitle">Student Profile</p>
 
     <nav class="main-nav" aria-label="Main navigation">
@@ -36,6 +36,69 @@
         interfaces to back-end logic. This site is a quick look at who I am, what I've learned so far, and the
         projects I've built along the way — use the navigation above or the cards below to explore.
       </p>
+    </section>
+
+    <!-- ============ Profile: view mode ============ -->
+    <section class="profile-card" id="profile-view">
+      <img class="profile-picture" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
+      <div class="profile-card-body">
+        <h2 id="display-name">Jose Gabriel Y. Cortez</h2>
+        <p class="profile-meta">
+          <span id="display-course">BS Information Technology</span>
+          <span class="meta-divider" aria-hidden="true">•</span>
+          <span id="display-year">4th Year</span>
+        </p>
+        <div class="profile-field">
+          <h3>About</h3>
+          <p id="display-about">My name is Jose Gabriel Y. Cortez, and I'm a student with a strong passion for technology and software development. I enjoy learning new programming languages, frameworks, and tools that allow me to create innovative solutions and applications. I'm currently studying Information Technology, where I've been building a foundation in programming, web development, and software design through coursework and hands-on projects. Outside of class, I like to play sports such as volleyball and table tennis, and I enjoy video games like Apex Legends and Mobile Legends. I'm also a big Marvel fan. Looking ahead, my goal is to grow into a full-stack developer and eventually work on products that make a real difference for the people who use them.</p>
+        </div>
+        <div class="profile-field">
+          <h3>Skills</h3>
+          <ul class="profile-skills" id="display-skills">
+            <li class="skill-pill">HTML</li>
+            <li class="skill-pill">CSS</li>
+            <li class="skill-pill">JavaScript</li>
+          </ul>
+        </div>
+        <button type="button" class="btn-primary" id="edit-btn">Edit</button>
+      </div>
+    </section>
+
+    <!-- ============ Profile: edit mode (hidden until Edit is clicked) ============ -->
+    <section class="profile-edit" id="profile-edit" hidden>
+      <h2>Edit Profile</h2>
+
+      <div class="form-group">
+        <label for="input-name">Full Name</label>
+        <input type="text" id="input-name">
+      </div>
+
+      <div class="form-group">
+        <label for="input-course">Course</label>
+        <input type="text" id="input-course">
+      </div>
+
+      <div class="form-group">
+        <label for="input-year">Year Level</label>
+        <input type="text" id="input-year">
+      </div>
+
+      <div class="form-group">
+        <label for="input-about">About</label>
+        <textarea id="input-about" rows="4"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="input-skills">Skills <span class="field-hint">separate each skill with a comma</span></label>
+        <input type="text" id="input-skills" placeholder="e.g. HTML, CSS, JavaScript">
+      </div>
+
+      <p class="form-feedback" id="form-feedback"></p>
+
+      <div class="form-actions">
+        <button type="button" class="btn-primary" id="save-btn">Save</button>
+        <button type="button" class="btn-secondary" id="cancel-btn">Cancel</button>
+      </div>
     </section>
 
     <section class="quick-links-section">
@@ -64,6 +127,8 @@
   <footer>
     &copy; 2026 Jose Gabriel Y. Cortez. All rights reserved.
   </footer>
+
+  <script src="profile.js"></script>
 
 </body>
 </html>

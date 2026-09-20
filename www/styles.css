@@ -7,6 +7,8 @@
   --gold: #E3B23C;
   --teal: #7FB2B9;
   --border: #2B3244;
+  --error: #E0796A;
+  --error-soft: rgba(224, 121, 106, 0.12);
 
   /* fluid spacing scale */
   --space-xs: clamp(0.5rem, 0.4rem + 0.4vw, 0.75rem);
@@ -49,7 +51,10 @@ img{ max-width: 100%; display: block; }
 .skip-link:focus{ top: 1rem; }
 
 a:focus-visible,
-button:focus-visible{
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
   outline: 2px solid var(--gold);
   outline-offset: 3px;
   border-radius: 4px;
@@ -205,6 +210,179 @@ section p + p{ margin-top: var(--space-sm); }
   margin-top: var(--space-md);
   max-width: 65ch;
   color: var(--ink-dim);
+}
+
+/* ---------- Student profile card ---------- */
+
+.profile-card{
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: var(--space-md);
+}
+
+.profile-picture{
+  width: clamp(80px, 10vw, 100px);
+  height: clamp(80px, 10vw, 100px);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.profile-card-body{ flex: 1; min-width: 0; }
+
+/* Overrides the generic "section h2" eyebrow treatment: a person's
+   name reads as a heading, not a small-caps label. */
+.profile-card-body h2{
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.6rem);
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--ink);
+  border: none;
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+
+.profile-meta{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  color: var(--teal);
+  margin-bottom: var(--space-sm);
+}
+
+.meta-divider{ color: var(--border); margin: 0 0.5rem; }
+
+.profile-field{ margin-bottom: var(--space-sm); }
+.profile-field:last-of-type{ margin-bottom: var(--space-md); }
+
+.profile-field h3{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 0.35rem;
+}
+
+.profile-field p{
+  color: var(--ink-dim);
+  max-width: none;
+  font-size: 0.95rem;
+}
+
+.profile-skills{
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-pill{
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--teal);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-primary,
+.btn-secondary{
+  border-radius: 999px;
+  padding: 0.7rem 1.6rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.btn-primary{
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  font-weight: 700;
+}
+
+.btn-primary:hover{ opacity: 0.9; }
+
+.btn-secondary{
+  background: transparent;
+  color: var(--ink-dim);
+  border: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible{
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ---------- Edit profile form ---------- */
+
+.profile-edit{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: var(--space-md);
+}
+
+.form-group{ margin-bottom: var(--space-sm); }
+
+.form-group label{
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.field-hint{
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+}
+
+.form-group textarea{ resize: vertical; min-height: 90px; }
+
+.form-feedback{
+  font-size: 0.88rem;
+  margin-bottom: var(--space-sm);
+}
+
+.form-feedback:not(:empty){
+  background: var(--error-soft);
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+}
+
+.form-actions{
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .quick-links{
@@ -466,6 +644,17 @@ footer a{
   .hero-desc{ max-width: none; }
 
   .contact-form{ max-width: none; }
+
+  .profile-card{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .form-actions{ flex-direction: column; }
+
+  .btn-primary,
+  .btn-secondary{ width: 100%; text-align: center; }
 }
 
 @media (prefers-reduced-motion: reduce){

@@ -16,7 +16,7 @@
 
   <header class="profile-header">
     <img class="avatar" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
-    <h1>Jose Gabriel Y. Cortez</h1>
+    <h1 id="header-name">Jose Gabriel Y. Cortez</h1>
     <p class="subtitle">Student Profile</p>
 
     <nav class="main-nav" aria-label="Main navigation">
@@ -34,6 +34,15 @@
       <p class="section-intro">
         Tools and skills that I have learned during my time as a student, grouped by area.
       </p>
+
+      <div class="skill-category">
+        <h3>My Skills</h3>
+        <ul class="profile-skills" id="skills-list">
+          <li class="skill-pill">HTML</li>
+          <li class="skill-pill">CSS</li>
+          <li class="skill-pill">JavaScript</li>
+        </ul>
+      </div>
 
       <div class="skill-category">
         <h3>Web Development</h3>
@@ -78,6 +87,8 @@
   <footer>
     &copy; 2026 Jose Gabriel Y. Cortez. All rights reserved.
   </footer>
+
+  <script src="shared.js"></script>
 
 </body>
 </html>

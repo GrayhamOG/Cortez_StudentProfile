@@ -106,4 +106,29 @@ Navigation is implemented by using href and multiple html files, so href html sy
 My code still implements the responsive design from activity 3 i just implemented it to gthe different pages.
 
 
+## ACTIVITY 5 Student Profile Editing & Local Data Storage
 
+## Project Description
+
+Activity 5 is the implementation of JS and utilizes local data storage to store data. 
+
+## Profile Editing
+The edit function saves what ever you changed for example the name if you change it to somethin glike Andre Anderson it will then update the name in all pages. This also applies to the about me page and the skills. For the skills it just adds the skills that you saved.
+
+## JavaScript Functionality
+Javascript is used to save and edit data in the Student profile. Javascript adds functionality to buttons such as edit, save and cancel. When saving the js saves it in local storage and updates name, course, year level, about me and skills. I also added validation if the text field is blank and you click save it says "pleasae input all fields"
+
+## Local Data Storage
+
+Local data is used in two files, write happens in profile.js while read happens in both profile.js and shared.js. In profile.js  const STORAGE_KEY = 'studentProfile'; this is where data gets written.
+
+## Application Screenshots
+
+| Profile Section | Edit Profile | Edit interface |
+|---|---|---|
+| ![Profile screenshot](Screenshots/act5-1.png) | ![Edit screenshot](Screenshots/act5-2.png) | ![Edit Interface screenshot](Screenshots/act5-3.png) |
+
+## Updated Info
+| About me | Skills | 
+|---|---|---|
+| ![Profile screenshot](Screenshots/act5-4.png) | ![Edit screenshot](Screenshots/act5-5.png) | 
