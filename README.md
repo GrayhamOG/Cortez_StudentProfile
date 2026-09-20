@@ -130,5 +130,5 @@ Local data is used in two files, write happens in profile.js while read happens 
 
 ## Updated Info
 | About me | Skills | 
-|---|---|---|
+|---|---|
 | ![Profile screenshot](Screenshots/act5-4.png) | ![Edit screenshot](Screenshots/act5-5.png) | 
