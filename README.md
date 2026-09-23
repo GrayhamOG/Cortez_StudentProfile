@@ -158,7 +158,7 @@ The app never lets a camera problem crash the page. All camera outcomes go throu
 ## Application Screenshots
 | Student Profile | Change Profile Picture |  Camera  |
 |---|---|---|
-| ![Profile screenshot](Screenshots/student-profile.png) | ![Edit screenshot](Screenshots/change-profile-picture.png) | ![Edit screenshot](Screenshots/camera.png) | 
+| ![Profile screenshot](Screenshots/student-profile.png) | ![Edit screenshot](Screenshots/change-pfp.png) | ![Edit screenshot](Screenshots/camera.png) | 
 
 | Captured Image| Updated Profile Picture | 
 |---|---|
