@@ -1,5 +1,6 @@
 // profile.js
-// Handles Edit / Save / Cancel for the Student Profile section on index.html.
+// Handles Edit / Save / Cancel for the Student Profile section on index.html
+// (Activity 5) and the Cordova camera profile picture (Activity 6).
 // Loaded as an external file (not inline) so it isn't blocked by the
 // page's Content-Security-Policy, which doesn't allow inline scripts.
 
@@ -105,3 +106,133 @@ cancelBtn.addEventListener('click', () => {
   viewSection.hidden = false;
   editSection.hidden = true;
 });
+
+
+// =====================================================================
+// Activity 6 — Profile picture via the Cordova camera
+// Plugin: cordova-plugin-camera  (exposes navigator.camera.getPicture)
+// =====================================================================
+
+// The picture is stored under its OWN key so saving the text profile
+// (which rewrites 'studentProfile') never wipes it out.
+const PICTURE_KEY = 'studentProfilePicture';
+
+const CAMERA_ERROR_MSG = 'Unable to access the camera. Please check your device permissions.';
+const CAMERA_CANCEL_MSG = 'No photo taken. Your profile picture was not changed.';
+
+const changePictureBtn = document.getElementById('change-picture-btn');
+const pictureStatus = document.getElementById('picture-status');
+// The card picture AND the header avatar should always match.
+const pictureImgs = document.querySelectorAll('.profile-picture, .avatar');
+
+let cameraBusy = false;
+
+function showPicture(src) {
+  pictureImgs.forEach((img) => { img.src = src; });
+}
+
+function setPictureStatus(message, isError) {
+  pictureStatus.textContent = message;
+  pictureStatus.classList.toggle('is-error', Boolean(isError));
+}
+
+function setCameraBusy(busy) {
+  cameraBusy = busy;
+  changePictureBtn.disabled = busy;
+}
+
+// ---- restore the saved picture on startup --------------------------
+function loadPicture() {
+  try {
+    const saved = localStorage.getItem(PICTURE_KEY);
+    if (saved) showPicture(saved);
+  } catch (err) {
+    console.warn('Could not read saved profile picture:', err);
+  }
+}
+loadPicture();
+
+// ---- success: camera returned a Base64 string ----------------------
+function onCameraSuccess(imageData) {
+  setCameraBusy(false);
+
+  // DATA_URL gives raw Base64 without the "data:" prefix — add it so
+  // it works as an <img> src (and passes the CSP: img-src 'self' data:).
+  const src = 'data:image/jpeg;base64,' + imageData;
+  showPicture(src);
+
+  try {
+    localStorage.setItem(PICTURE_KEY, src);
+    setPictureStatus('Profile picture updated.', false);
+  } catch (err) {
+    // e.g. storage quota exceeded — the new photo still shows for now
+    console.warn('Could not save profile picture:', err);
+    setPictureStatus('Photo updated, but it could not be saved for next time.', true);
+  }
+}
+
+// ---- failure OR cancel: both arrive in the error callback -----------
+function onCameraFail(message) {
+  setCameraBusy(false);
+  const text = String(message || '');
+
+  // The plugin reports "user closed the camera" as an error string,
+  // e.g. "No Image Selected" / "Camera cancelled." — that is not a failure.
+  if (/cancel|no image selected|no images? selected/i.test(text)) {
+    setPictureStatus(CAMERA_CANCEL_MSG, false);
+    return; // existing picture stays exactly as it was
+  }
+
+  console.warn('Camera error:', text);
+  setPictureStatus(CAMERA_ERROR_MSG, true);
+}
+
+// ---- open the camera ---------------------------------------------
+function takePicture() {
+  if (cameraBusy) return;
+  setPictureStatus('', false);
+
+  // navigator.camera only exists inside Cordova after 'deviceready'
+  // (and never in a plain desktop browser).
+  if (!navigator.camera || typeof Camera === 'undefined') {
+    setPictureStatus(CAMERA_ERROR_MSG, true);
+    return;
+  }
+
+  const options = {
+    quality: 60,                                   // keeps the Base64 small for localStorage
+    destinationType: Camera.DestinationType.DATA_URL,
+    sourceType: Camera.PictureSourceType.CAMERA,
+    encodingType: Camera.EncodingType.JPEG,
+    mediaType: Camera.MediaType.PICTURE,
+    targetWidth: 400,
+    targetHeight: 400,
+    correctOrientation: true,                      // fixes sideways photos
+    cameraDirection: Camera.Direction.FRONT,
+    saveToPhotoAlbum: false
+  };
+
+  setCameraBusy(true);
+  try {
+    navigator.camera.getPicture(onCameraSuccess, onCameraFail, options);
+  } catch (err) {
+    onCameraFail(err && err.message);
+  }
+}
+
+changePictureBtn.addEventListener('click', takePicture);
+
+// ---- Android: app may be killed while the camera is open -------------
+// The plugin hands the result back through the 'resume' event instead.
+document.addEventListener('deviceready', () => {
+  document.addEventListener('resume', (event) => {
+    const pending = event && event.pendingResult;
+    if (!pending || pending.pluginServiceName !== 'Camera') return;
+
+    if (pending.pluginStatus === 'OK') {
+      onCameraSuccess(pending.result);
+    } else {
+      onCameraFail(pending.result);
+    }
+  }, false);
+}, false);

@@ -15,9 +15,17 @@
   "cordova": {
     "platforms": [
       "android"
-    ]
+    ],
+    "plugins": {
+      "cordova-plugin-camera": {
+        "ANDROIDX_CORE_VERSION": "1.6.+"
+      }
+    }
   },
   "devDependencies": {
     "cordova-android": "^15.1.0"
+  },
+  "dependencies": {
+    "cordova-plugin-camera": "7.0.0"
   }
 }

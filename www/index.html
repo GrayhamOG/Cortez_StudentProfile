@@ -40,7 +40,15 @@
 
     <!-- ============ Profile: view mode ============ -->
     <section class="profile-card" id="profile-view">
-      <img class="profile-picture" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
+      <div class="profile-picture-wrap">
+        <img class="profile-picture" id="profile-picture" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
+        <button type="button" class="camera-btn" id="change-picture-btn" aria-label="Change profile picture">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </button>
+      </div>
       <div class="profile-card-body">
         <h2 id="display-name">Jose Gabriel Y. Cortez</h2>
         <p class="profile-meta">
@@ -48,6 +56,7 @@
           <span class="meta-divider" aria-hidden="true">•</span>
           <span id="display-year">4th Year</span>
         </p>
+        <p class="picture-status" id="picture-status" role="status" aria-live="polite"></p>
         <div class="profile-field">
           <h3>About</h3>
           <p id="display-about">My name is Jose Gabriel Y. Cortez, and I'm a student with a strong passion for technology and software development. I enjoy learning new programming languages, frameworks, and tools that allow me to create innovative solutions and applications. I'm currently studying Information Technology, where I've been building a foundation in programming, web development, and software design through coursework and hands-on projects. Outside of class, I like to play sports such as volleyball and table tennis, and I enjoy video games like Apex Legends and Mobile Legends. I'm also a big Marvel fan. Looking ahead, my goal is to grow into a full-stack developer and eventually work on products that make a real difference for the people who use them.</p>
@@ -128,6 +137,7 @@
     &copy; 2026 Jose Gabriel Y. Cortez. All rights reserved.
   </footer>
 
+  <script src="cordova.js"></script>
   <script src="profile.js"></script>
 
 </body>

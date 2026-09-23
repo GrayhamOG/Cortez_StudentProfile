@@ -132,3 +132,34 @@ Local data is used in two files, write happens in profile.js while read happens 
 | About me | Skills | 
 |---|---|
 | ![Profile screenshot](Screenshots/act5-4.png) | ![Edit screenshot](Screenshots/act5-5.png) | 
+
+
+
+
+## Activity 6: Profile Picture Camera Integration
+
+## Profile Editing
+The profile page or index.html has two sections that swap places, the first one is a view mode #profile-view and a edit mode #profile-edit. Only
+one is visible at a time, using the html hidden.
+
+## Camera Integration
+The app uses the cordova-plugin-camera plugin, which adds the JavaScript function navigator.camera.getPicture(success, error, options)
+
+## Device Feature Integration
+If a webpage is running inside a webpage it cannot access the camera. But with the use of cordova is can create a connection using a plugin bridge which is the 
+cordova-plugin-camera plugin.
+
+## Image Handling
+Display. The plugin returns a raw Base64 string. onCameraSuccess() adds the prefix data:image/jpeg;base64, and sets the result as the src of both the profile card picture and the header avatar, so they always match. And for persistence of the profile picture uses localStorage.setItem('studentProfilePicture', dataUrl); in On every launch, profile.js (Profile page) and shared.js (all other pages) read this key and set the picture. If nothing is stored, the default josecortez.jpg is shown.
+
+## Error Handling
+The app never lets a camera problem crash the page. All camera outcomes go through two callbacks, and messages appear in a status line under the profile name (role="status", so screen readers announce it).
+
+## Application Screenshots
+| Student Profile | Change Profile Picture |  Camera  |
+|---|---|---|
+| ![Profile screenshot](Screenshots/student-profile.png) | ![Edit screenshot](Screenshots/change-profile-picture.png) | ![Edit screenshot](Screenshots/camera.png) | 
+
+| Captured Image| Updated Profile Picture | 
+|---|---|
+| ![Profile screenshot](Screenshots/captured-image.png) | ![Edit screenshot](Screenshots/updated-profile-picture.png) | 
