@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
-<title>Jose Gabriel Y. Cortez — Student Profile</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' http://localhost:3000 http://10.0.2.2:3000;">
+<title>Student Profile</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth.css">
 </head>
 <body>
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="profile-header">
-    <img class="avatar" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
-    <h1 id="header-name">Jose Gabriel Y. Cortez</h1>
+    <img class="avatar" src="josecortez.jpg" alt="Profile picture">
+    <h1 id="header-name">Student Profile</h1>
     <p class="subtitle">Student Profile</p>
 
     <nav class="main-nav" aria-label="Main navigation">
@@ -25,6 +26,7 @@
       <a href="skills.html">Skills</a>
       <a href="projects.html">Projects</a>
       <a href="contact.html">Contact</a>
+      <button type="button" class="nav-logout" id="logout-btn">Logout</button>
     </nav>
   </header>
 
@@ -38,10 +40,10 @@
       </p>
     </section>
 
-    <!-- ============ Profile: view mode ============ -->
+    <!-- ============ Profile: view mode (data comes from the database) ============ -->
     <section class="profile-card" id="profile-view">
       <div class="profile-picture-wrap">
-        <img class="profile-picture" id="profile-picture" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
+        <img class="profile-picture" id="profile-picture" src="josecortez.jpg" alt="Profile picture">
         <button type="button" class="camera-btn" id="change-picture-btn" aria-label="Change profile picture">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -50,26 +52,25 @@
         </button>
       </div>
       <div class="profile-card-body">
-        <h2 id="display-name">Jose Gabriel Y. Cortez</h2>
+        <h2 id="display-name">Loading…</h2>
         <p class="profile-meta">
-          <span id="display-course">BS Information Technology</span>
+          <span id="display-course"></span>
           <span class="meta-divider" aria-hidden="true">•</span>
-          <span id="display-year">4th Year</span>
+          <span id="display-year"></span>
         </p>
         <p class="picture-status" id="picture-status" role="status" aria-live="polite"></p>
         <div class="profile-field">
           <h3>About</h3>
-          <p id="display-about">My name is Jose Gabriel Y. Cortez, and I'm a student with a strong passion for technology and software development. I enjoy learning new programming languages, frameworks, and tools that allow me to create innovative solutions and applications. I'm currently studying Information Technology, where I've been building a foundation in programming, web development, and software design through coursework and hands-on projects. Outside of class, I like to play sports such as volleyball and table tennis, and I enjoy video games like Apex Legends and Mobile Legends. I'm also a big Marvel fan. Looking ahead, my goal is to grow into a full-stack developer and eventually work on products that make a real difference for the people who use them.</p>
+          <p id="display-about">Loading your profile…</p>
         </div>
         <div class="profile-field">
           <h3>Skills</h3>
-          <ul class="profile-skills" id="display-skills">
-            <li class="skill-pill">HTML</li>
-            <li class="skill-pill">CSS</li>
-            <li class="skill-pill">JavaScript</li>
-          </ul>
+          <ul class="profile-skills" id="display-skills"></ul>
         </div>
-        <button type="button" class="btn-primary" id="edit-btn">Edit</button>
+        <div class="profile-actions">
+          <button type="button" class="btn-primary" id="edit-btn">Edit</button>
+          <button type="button" class="btn-danger" id="delete-btn">Delete Account</button>
+        </div>
       </div>
     </section>
 
@@ -102,11 +103,29 @@
         <input type="text" id="input-skills" placeholder="e.g. HTML, CSS, JavaScript">
       </div>
 
-      <p class="form-feedback" id="form-feedback"></p>
+      <p class="form-feedback" id="form-feedback" role="alert"></p>
 
       <div class="form-actions">
         <button type="button" class="btn-primary" id="save-btn">Save</button>
         <button type="button" class="btn-secondary" id="cancel-btn">Cancel</button>
+      </div>
+    </section>
+
+    <!-- ============ Delete account (hidden until Delete Account is clicked) ============ -->
+    <section class="profile-edit danger-zone" id="delete-section" hidden>
+      <h2>Delete Account</h2>
+      <p>This permanently deletes your account and profile from the database. Enter your password to confirm.</p>
+
+      <div class="form-group">
+        <label for="delete-password">Password</label>
+        <input type="password" id="delete-password" autocomplete="current-password">
+      </div>
+
+      <p class="form-feedback" id="delete-feedback" role="alert"></p>
+
+      <div class="form-actions">
+        <button type="button" class="btn-danger" id="delete-confirm-btn">Delete My Account</button>
+        <button type="button" class="btn-secondary" id="delete-cancel-btn">Cancel</button>
       </div>
     </section>
 
@@ -137,6 +156,8 @@
     &copy; 2026 Jose Gabriel Y. Cortez. All rights reserved.
   </footer>
 
+  <script src="api.js"></script>
+  <script src="shared.js"></script>
   <script src="cordova.js"></script>
   <script src="profile.js"></script>
 

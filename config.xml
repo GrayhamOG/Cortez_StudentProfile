@@ -11,6 +11,9 @@
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
 
+    <!-- Activity 7: serve the app from http://localhost so it can call the http:// API -->
+    <preference name="scheme" value="http" />
+
     <!-- Camera plugin (Activity 6) -->
     <plugin name="cordova-plugin-camera" spec="^7.0.0" />
 
@@ -19,5 +22,10 @@
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.CAMERA" />
         </config-file>
+
+        <!-- Activity 7: allow plain http:// calls to the local API (testing only) -->
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
     </platform>
 </widget>

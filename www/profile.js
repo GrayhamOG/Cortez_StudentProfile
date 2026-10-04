@@ -1,12 +1,16 @@
-// profile.js
-// Handles Edit / Save / Cancel for the Student Profile section on index.html
-// (Activity 5) and the Cordova camera profile picture (Activity 6).
-// Loaded as an external file (not inline) so it isn't blocked by the
-// page's Content-Security-Policy, which doesn't allow inline scripts.
+// profile.js — Profile page (index.html).
+// Activity 5: Edit / Save / Cancel      -> now saved to the DATABASE through the API
+// Activity 6: Cordova camera picture    -> now saved to the DATABASE through the API
+// Activity 7: Delete account (CRUD "Delete")
+//
+// Load order on the page: api.js, shared.js, cordova.js, profile.js
+// shared.js already redirects to Login if the user isn't logged in and starts
+// the profile request (window.profileReady), which this file reuses.
 
 // ---- element references ----------------------------------------
 const viewSection = document.getElementById('profile-view');
 const editSection = document.getElementById('profile-edit');
+const deleteSection = document.getElementById('delete-section');
 
 const displayName = document.getElementById('display-name');
 const headerName = document.getElementById('header-name');
@@ -26,7 +30,29 @@ const saveBtn = document.getElementById('save-btn');
 const cancelBtn = document.getElementById('cancel-btn');
 const feedback = document.getElementById('form-feedback');
 
-const STORAGE_KEY = 'studentProfile';
+const deleteBtn = document.getElementById('delete-btn');
+const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+const deleteCancelBtn = document.getElementById('delete-cancel-btn');
+const deletePassword = document.getElementById('delete-password');
+const deleteFeedback = document.getElementById('delete-feedback');
+
+const LOAD_ERROR_MSG = 'Unable to retrieve your profile. Please try again.';
+const UPDATE_ERROR_MSG = 'Unable to update your profile.';
+const UPDATE_OK_MSG = 'Profile updated successfully.';
+
+// The card picture AND the header avatar should always match.
+const pictureImgs = document.querySelectorAll('.profile-picture, .avatar');
+const pictureStatus = document.getElementById('picture-status');
+
+function showPicture(src) {
+  pictureImgs.forEach((img) => { img.src = src; });
+}
+
+// One status line under the name: used for picture + profile update messages.
+function setStatus(message, isError) {
+  pictureStatus.textContent = message;
+  pictureStatus.classList.toggle('is-error', Boolean(isError));
+}
 
 // ---- render an array of skills as pills -----------------------------
 function renderSkills(skills) {
@@ -39,20 +65,27 @@ function renderSkills(skills) {
   });
 }
 
-// ---- load saved data on page load --------------------------------
-function loadProfile() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    const data = JSON.parse(saved);
-    displayName.textContent = data.name;
-    headerName.textContent = data.name;
-    displayCourse.textContent = data.course;
-    displayYear.textContent = data.year;
-    displayAbout.textContent = data.about;
-    if (data.skills) renderSkills(data.skills);
-  }
+// ---- show a profile record that came from the database ---------------
+function renderProfile(profile) {
+  displayName.textContent = profile.name;
+  headerName.textContent = profile.name;
+  displayCourse.textContent = profile.course;
+  displayYear.textContent = profile.year;
+  displayAbout.textContent = profile.about;
+  renderSkills(profile.skills);
+  if (profile.picture) showPicture(profile.picture);
 }
-loadProfile();
+
+// ---- READ: load the profile from the database ------------------------
+// (shared.js sets profileReady; if it is missing the user isn't logged in and is already being sent to Login)
+(window.profileReady || Promise.reject({ status: 401 }))
+  .then(renderProfile)
+  .catch((err) => {
+    if (err.status === 401) return; // session expired: api.js sends the user to Login
+    displayAbout.textContent = LOAD_ERROR_MSG;
+    setStatus(LOAD_ERROR_MSG, true);
+    editBtn.disabled = true; // don't let them "edit" a profile that never loaded
+  });
 
 // ---- Edit button: fill inputs with current text, show the form ----
 editBtn.addEventListener('click', () => {
@@ -64,14 +97,16 @@ editBtn.addEventListener('click', () => {
     .map((li) => li.textContent)
     .join(', ');
   feedback.textContent = '';
+  setStatus('', false);
 
   viewSection.hidden = true;
+  deleteSection.hidden = true;
   editSection.hidden = false;
   inputName.focus();
 });
 
-// ---- Save button: validate, update the page, save, go back --------
-saveBtn.addEventListener('click', () => {
+// ---- UPDATE: validate, save to the database, then show the result ---
+saveBtn.addEventListener('click', async () => {
   const name = inputName.value.trim();
   const course = inputCourse.value.trim();
   const year = inputYear.value.trim();
@@ -86,19 +121,22 @@ saveBtn.addEventListener('click', () => {
     return;
   }
 
-  // update what's shown on the page
-  displayName.textContent = name;
-  headerName.textContent = name;
-  displayCourse.textContent = course;
-  displayYear.textContent = year;
-  displayAbout.textContent = about;
-  renderSkills(skills);
-
-  // save it so it's still there after a refresh
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ name, course, year, about, skills }));
-
-  viewSection.hidden = false;
-  editSection.hidden = true;
+  saveBtn.disabled = true;
+  feedback.textContent = '';
+  try {
+    const saved = await Api.updateProfile({ name, course, year, about, skills });
+    renderProfile(saved); // show exactly what the database now holds
+    viewSection.hidden = false;
+    editSection.hidden = true;
+    setStatus(UPDATE_OK_MSG, false);
+  } catch (err) {
+    if (err.status === 401) return;
+    // Validation problems from the server are safe to show; otherwise use the generic message.
+    feedback.textContent = err.status === 400 ? err.message : UPDATE_ERROR_MSG;
+    // stay in edit mode so nothing the student typed is lost
+  } finally {
+    saveBtn.disabled = false;
+  }
 });
 
 // ---- Cancel button: discard changes, just go back ------------------
@@ -107,67 +145,77 @@ cancelBtn.addEventListener('click', () => {
   editSection.hidden = true;
 });
 
+// ---- DELETE: remove the account (password required) -----------------
+deleteBtn.addEventListener('click', () => {
+  deletePassword.value = '';
+  deleteFeedback.textContent = '';
+  setStatus('', false);
+  viewSection.hidden = true;
+  deleteSection.hidden = false;
+  deletePassword.focus();
+});
+
+deleteCancelBtn.addEventListener('click', () => {
+  deleteSection.hidden = true;
+  viewSection.hidden = false;
+});
+
+deleteConfirmBtn.addEventListener('click', async () => {
+  if (!deletePassword.value) {
+    deleteFeedback.textContent = 'Please enter your password to confirm.';
+    return;
+  }
+  deleteConfirmBtn.disabled = true;
+  deleteFeedback.textContent = '';
+  try {
+    await Api.deleteAccount(deletePassword.value);
+    location.replace('login.html?deleted=1');
+  } catch (err) {
+    if (err.status === 401) return;
+    deleteFeedback.textContent = err.status === 403 ? 'Incorrect password.' : 'Unable to delete your account.';
+    deleteConfirmBtn.disabled = false;
+  }
+});
+
 
 // =====================================================================
 // Activity 6 — Profile picture via the Cordova camera
 // Plugin: cordova-plugin-camera  (exposes navigator.camera.getPicture)
+// The captured photo is now sent to the API and stored in the database.
 // =====================================================================
-
-// The picture is stored under its OWN key so saving the text profile
-// (which rewrites 'studentProfile') never wipes it out.
-const PICTURE_KEY = 'studentProfilePicture';
 
 const CAMERA_ERROR_MSG = 'Unable to access the camera. Please check your device permissions.';
 const CAMERA_CANCEL_MSG = 'No photo taken. Your profile picture was not changed.';
+const PICTURE_SAVE_ERROR_MSG = 'Unable to update your profile picture.';
 
 const changePictureBtn = document.getElementById('change-picture-btn');
-const pictureStatus = document.getElementById('picture-status');
-// The card picture AND the header avatar should always match.
-const pictureImgs = document.querySelectorAll('.profile-picture, .avatar');
 
 let cameraBusy = false;
-
-function showPicture(src) {
-  pictureImgs.forEach((img) => { img.src = src; });
-}
-
-function setPictureStatus(message, isError) {
-  pictureStatus.textContent = message;
-  pictureStatus.classList.toggle('is-error', Boolean(isError));
-}
 
 function setCameraBusy(busy) {
   cameraBusy = busy;
   changePictureBtn.disabled = busy;
 }
 
-// ---- restore the saved picture on startup --------------------------
-function loadPicture() {
-  try {
-    const saved = localStorage.getItem(PICTURE_KEY);
-    if (saved) showPicture(saved);
-  } catch (err) {
-    console.warn('Could not read saved profile picture:', err);
-  }
-}
-loadPicture();
-
 // ---- success: camera returned a Base64 string ----------------------
 function onCameraSuccess(imageData) {
-  setCameraBusy(false);
+  savePicture(imageData);
+}
 
-  // DATA_URL gives raw Base64 without the "data:" prefix — add it so
-  // it works as an <img> src (and passes the CSP: img-src 'self' data:).
+async function savePicture(imageData) {
+  // DATA_URL gives raw Base64 without the "data:" prefix — add it so the
+  // server accepts it and it works as an <img> src.
   const src = 'data:image/jpeg;base64,' + imageData;
-  showPicture(src);
-
   try {
-    localStorage.setItem(PICTURE_KEY, src);
-    setPictureStatus('Profile picture updated.', false);
+    await Api.updatePicture(src);   // save to the database first…
+    showPicture(src);               // …then show it, so the screen never lies
+    setStatus('Profile picture updated.', false);
   } catch (err) {
-    // e.g. storage quota exceeded — the new photo still shows for now
+    if (err.status === 401) return;
     console.warn('Could not save profile picture:', err);
-    setPictureStatus('Photo updated, but it could not be saved for next time.', true);
+    setStatus(PICTURE_SAVE_ERROR_MSG, true);
+  } finally {
+    setCameraBusy(false);
   }
 }
 
@@ -179,28 +227,28 @@ function onCameraFail(message) {
   // The plugin reports "user closed the camera" as an error string,
   // e.g. "No Image Selected" / "Camera cancelled." — that is not a failure.
   if (/cancel|no image selected|no images? selected/i.test(text)) {
-    setPictureStatus(CAMERA_CANCEL_MSG, false);
+    setStatus(CAMERA_CANCEL_MSG, false);
     return; // existing picture stays exactly as it was
   }
 
   console.warn('Camera error:', text);
-  setPictureStatus(CAMERA_ERROR_MSG, true);
+  setStatus(CAMERA_ERROR_MSG + ' (' + text + ')', true);
 }
 
 // ---- open the camera ---------------------------------------------
 function takePicture() {
   if (cameraBusy) return;
-  setPictureStatus('', false);
+  setStatus('', false);
 
   // navigator.camera only exists inside Cordova after 'deviceready'
   // (and never in a plain desktop browser).
   if (!navigator.camera || typeof Camera === 'undefined') {
-    setPictureStatus(CAMERA_ERROR_MSG, true);
+    setStatus('Camera plugin not loaded (navigator.camera missing).', true);
     return;
-  }
+}
 
   const options = {
-    quality: 60,                                   // keeps the Base64 small for localStorage
+    quality: 60,                                   // keeps the Base64 small
     destinationType: Camera.DestinationType.DATA_URL,
     sourceType: Camera.PictureSourceType.CAMERA,
     encodingType: Camera.EncodingType.JPEG,

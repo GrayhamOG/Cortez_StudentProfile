@@ -163,3 +163,33 @@ The app never lets a camera problem crash the page. All camera outcomes go throu
 | Captured Image| Updated Profile Picture | 
 |---|---|
 | ![Profile screenshot](Screenshots/captured-image.png) | ![Edit screenshot](Screenshots/updated-profile-picture.png) | 
+
+
+## Activity 7: Database
+
+## Authentication
+Students log in with their Student ID or email and a password on the Login page. The app does not check the password itself. It sends the credentials to the backend API, which verifies them against the database.
+
+## Database Integration
+Technology: SQLite, a file-based SQL database, accessed from the Node.js backend. Profile data is stored in the database, not hard-coded in the app and not in local storage.
+
+## API/Backend
+The Cordova app never connects to the database directly. It talks to a backend API (Node.js + Express) over HTTP using JSON, and the API talks to the database.
+
+## Security
+- **Passwords are never stored as plain text.** They are hashed with bcrypt before being saved.
+- **No credentials in the repository.** The token-signing secret is read from an environment variable (`.env`), which is listed in `.gitignore`. Only `.env.example`, which has no real values, is committed. The database file is also git-ignored.
+
+
+## Screenshots
+| Login Page | Register Page |  New ProfilePic  |
+|---|---|---|
+| ![Login Page](Screenshots/login.png) | ![New Register](Screenshots/register.png) | ![New Profile Pic](Screenshots/pfpnew.png) | 
+
+
+## Screenshots 2
+| Edit| Logout |  
+|---|---|
+| ![Edit](Screenshots/edit.png) | ![Logout](Screenshots/logout.png) |
+
+
