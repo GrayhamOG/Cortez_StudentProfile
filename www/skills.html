@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
-<title>Skills — Jose Gabriel Y. Cortez</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' http://localhost:3000 http://10.0.2.2:3000;">
+<title>Skills — Student Profile</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth.css">
 </head>
 <body>
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="profile-header">
-    <img class="avatar" src="josecortez.jpg" alt="Portrait of Jose Gabriel Y. Cortez">
-    <h1 id="header-name">Jose Gabriel Y. Cortez</h1>
+    <img class="avatar" src="josecortez.jpg" alt="Profile picture">
+    <h1 id="header-name">Student Profile</h1>
     <p class="subtitle">Student Profile</p>
 
     <nav class="main-nav" aria-label="Main navigation">
@@ -25,6 +26,7 @@
       <a href="skills.html" aria-current="page">Skills</a>
       <a href="projects.html">Projects</a>
       <a href="contact.html">Contact</a>
+      <button type="button" class="nav-logout" id="logout-btn">Logout</button>
     </nav>
   </header>
 
@@ -37,11 +39,7 @@
 
       <div class="skill-category">
         <h3>My Skills</h3>
-        <ul class="profile-skills" id="skills-list">
-          <li class="skill-pill">HTML</li>
-          <li class="skill-pill">CSS</li>
-          <li class="skill-pill">JavaScript</li>
-        </ul>
+        <ul class="profile-skills" id="skills-list"></ul>
       </div>
 
       <div class="skill-category">
@@ -88,6 +86,7 @@
     &copy; 2026 Jose Gabriel Y. Cortez. All rights reserved.
   </footer>
 
+  <script src="api.js"></script>
   <script src="shared.js"></script>
 
 </body>

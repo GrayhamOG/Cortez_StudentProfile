@@ -1,43 +1,61 @@
-// Text profile (Activity 5)
+// shared.js — runs on every protected page (Profile, About, Skills, Projects, Contact).
+// 1. Blocks the page unless the user is logged in.
+// 2. Loads the student's profile from the database ONCE and shares it.
+// 3. Fills the header (name + picture) and the About/Skills pages.
+// 4. Wires up the Logout button.
+// Requires api.js to be loaded first.
+
 (function () {
-  const saved = localStorage.getItem('studentProfile');
-  if (!saved) return; // nothing saved yet, leave the page's default text as-is
-
-  const data = JSON.parse(saved);
-
-  const headerName = document.getElementById('header-name');
-  if (headerName && data.name) {
-    headerName.textContent = data.name;
-  }
-
-  const aboutText = document.getElementById('about-text');
-  if (aboutText && data.about) {
-    aboutText.textContent = data.about;
-  }
-
-  const skillsList = document.getElementById('skills-list');
-  if (skillsList && data.skills && data.skills.length > 0) {
-    skillsList.innerHTML = '';
-    data.skills.forEach((skill) => {
-      const li = document.createElement('li');
-      li.className = 'skill-pill';
-      li.textContent = skill;
-      skillsList.appendChild(li);
-    });
-  }
-})();
-
-// Profile picture (Activity 6): show the captured photo in the header
-// avatar on every page. Runs separately so it works even if no text
-// profile has been saved yet.
-(function () {
+  // Old Activity 5/6 versions kept the profile in local storage. The database
+  // is now the source of truth, so remove those stale copies.
   try {
-    const picture = localStorage.getItem('studentProfilePicture');
-    if (!picture) return;
-    document.querySelectorAll('.avatar').forEach((img) => {
-      img.src = picture;
+    localStorage.removeItem('studentProfile');
+    localStorage.removeItem('studentProfilePicture');
+  } catch (e) { /* ignore */ }
+
+  if (!Api.guard()) return;
+
+  const LOAD_ERROR = 'Unable to retrieve your profile. Please try again.';
+
+  // ---- Logout ------------------------------------------------------
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      logoutBtn.disabled = true;
+      Api.logout();
     });
-  } catch (err) {
-    console.warn('Could not load saved profile picture:', err);
   }
+
+  // ---- Load profile from the database --------------------------------
+  const request = Api.getProfile();
+  window.profileReady = request; // profile.js (index page) reuses this same request
+
+  request.then((profile) => {
+    const headerName = document.getElementById('header-name');
+    if (headerName) headerName.textContent = profile.name;
+
+    if (profile.picture) {
+      document.querySelectorAll('.avatar').forEach((img) => { img.src = profile.picture; });
+    }
+
+    const aboutText = document.getElementById('about-text');
+    if (aboutText) aboutText.textContent = profile.about;
+
+    const skillsList = document.getElementById('skills-list');
+    if (skillsList) {
+      skillsList.innerHTML = '';
+      profile.skills.forEach((skill) => {
+        const li = document.createElement('li');
+        li.className = 'skill-pill';
+        li.textContent = skill;
+        skillsList.appendChild(li);
+      });
+    }
+  }).catch((err) => {
+    if (err.status === 401) return; // already redirected to Login
+    const aboutText = document.getElementById('about-text');
+    if (aboutText) aboutText.textContent = LOAD_ERROR;
+    const skillsList = document.getElementById('skills-list');
+    if (skillsList) skillsList.innerHTML = '<li class="load-error">' + LOAD_ERROR + '</li>';
+  });
 })();
