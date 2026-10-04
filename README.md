@@ -184,12 +184,12 @@ The Cordova app never connects to the database directly. It talks to a backend A
 ## Screenshots
 | Login Page | Register Page |  New ProfilePic  |
 |---|---|---|
-| ![Login Page](login.png) | ![New Register](register.png) | ![New Profile Pic](pfpnew.png) | 
+| ![Login Page](Screenshots/login.png) | ![New Register](Screenshots/register.png) | ![New Profile Pic](Screenshots/pfpnew.png) | 
 
 
 ## Screenshots 2
 | Edit| Logout |  
 |---|---|
-| ![Edit](edit.png) | ![Logout](logout.png) |
+| ![Edit](Screenshots/edit.png) | ![Logout](Screenshots/logout.png) |
 
 
